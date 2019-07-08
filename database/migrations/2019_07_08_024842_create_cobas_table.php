@@ -15,6 +15,7 @@ class CreateCobasTable extends Migration
     {
         Schema::create('cobas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('coba_code');
             $table->timestamps();
         });
     }

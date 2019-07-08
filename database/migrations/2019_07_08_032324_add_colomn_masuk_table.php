@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTestersTable extends Migration
+class AddColomnMasukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateTestersTable extends Migration
      */
     public function up()
     {
-        Schema::create('testers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+        Schema::table('cobas', function (Blueprint $table) {
+            $table->string('masuk')->after('coba_description');
         });
     }
 
@@ -26,6 +25,8 @@ class CreateTestersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('testers');
+        Schema::table('cobas', function (Blueprint $table) {
+            $table->dropColumn('masuk');
+        });
     }
 }
