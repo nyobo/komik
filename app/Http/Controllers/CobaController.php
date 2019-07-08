@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CobaRequest;
 use App\Coba;
+use App\Http\Controllers\API\BaseController;
 
-class CobaController extends Controller
+class CobaController extends BaseController
 {
     public function index()
     {
         $cobas = Coba::latest()->get();
-        return response()->json($cobas);
+        return $this->sendResponse($cobas->toArray(), 'Products retrieved successfully.');
+        // return response()->json($cobas);
     }
     public function store(CobaRequest $request)
     {
