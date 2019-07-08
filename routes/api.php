@@ -22,7 +22,5 @@ Route::get('checkusers', 'TesterController@checkusers');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('bukus', 'buku\bukuapps');
 });
-Route::resource('testers ', 'testerController');Route::resource(
-                'testers
-                ','
-                testerController');
+Route::resource('testers ', 'testerController');
+Route::resource('cobas', 'CobaController');

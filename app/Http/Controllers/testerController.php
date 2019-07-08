@@ -1,35 +1,36 @@
 <?php
-    namespace App\Http\Controllers;
 
-    use App\Http\Requests\{{modelName}}Request;
-    use App\{{modelName}};
+namespace App\Http\Controllers;
 
-    class {{modelName}}Controller extends Controller
+use App\Http\Requests\testerRequest;
+use App\tester;
+
+class testerController extends Controller
+{
+    public function index()
     {
-        public function index()
-        {
-            ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
-            return response()->json(${{modelNamePluralLowerCase}});
-        }
-        public function store({{modelName}}Request $request)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 201);
-        }
-        public function show($id)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-            return response()->json(${{modelNameSingularLowerCase}});
-        }
-        public function update({{modelName}}Request $request, $id)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-            ${{modelNameSingularLowerCase}}->update($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 200);
-        }
-        public function destroy($id)
-        {
-            {{modelName}}::destroy($id);
-            return response()->json(null, 204);
-        }
+        $testers = tester::latest()->get();
+        return response()->json($testers);
     }
+    public function store(testerRequest $request)
+    {
+        $tester = tester::create($request->all());
+        return response()->json($tester, 201);
+    }
+    public function show($id)
+    {
+        $tester = tester::findOrFail($id);
+        return response()->json($tester);
+    }
+    public function update(testerRequest $request, $id)
+    {
+        $tester = tester::findOrFail($id);
+        $tester->update($request->all());
+        return response()->json($tester, 200);
+    }
+    public function destroy($id)
+    {
+        tester::destroy($id);
+        return response()->json(null, 204);
+    }
+}

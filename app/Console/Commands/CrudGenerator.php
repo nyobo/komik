@@ -36,13 +36,10 @@ class CrudGenerator extends Command
         File::append(
             base_path('routes/api.php'),
             'Route::resource(
-                \'' . Str::plural(strtolower($name)) . "
-                ','
-                " . $name . 'Controller\');'
+                \'' . Str::plural(strtolower($name)) . "','" . $name . 'Controller\');'
         );
         Artisan::call(
-            'make:migration create_' . strtolower(Str::plural($name)) .
-                '_table --create=' . strtolower(Str::plural($name))
+            'make:migration create_' . strtolower(Str::plural($name)) . '_table --create=' . strtolower(Str::plural($name))
         );
     }
 
@@ -86,11 +83,11 @@ class CrudGenerator extends Command
     protected function controller($name)
     {
         $modelTemplate = str_replace(
-            ["
-                {{modelName}},
-                {{modelNamePluralLowerCase}},
-                {{modelNameSingularLowerCase}}
-            "],
+            [
+                '{{modelName}}',
+                '{{modelNamePluralLowerCase}}',
+                '{{modelNameSingularLowerCase}}'
+            ],
             [
                 $name,
                 strtolower(Str::plural($name)),

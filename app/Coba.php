@@ -3,7 +3,7 @@
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Coba} extends Model
+    class Coba extends Model
     {
         protected $guarded = ['id'];
     }

@@ -1,35 +1,36 @@
 <?php
-    namespace App\Http\Controllers;
 
-    use App\Http\Requests\{{modelName}}Request;
-    use App\{{modelName}};
+namespace App\Http\Controllers;
 
-    class {{modelName}}Controller extends Controller
+use App\Http\Requests\CobaRequest;
+use App\Coba;
+
+class CobaController extends Controller
+{
+    public function index()
     {
-        public function index()
-        {
-            ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
-            return response()->json(${{modelNamePluralLowerCase}});
-        }
-        public function store({{modelName}}Request $request)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 201);
-        }
-        public function show($id)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-            return response()->json(${{modelNameSingularLowerCase}});
-        }
-        public function update({{modelName}}Request $request, $id)
-        {
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-            ${{modelNameSingularLowerCase}}->update($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 200);
-        }
-        public function destroy($id)
-        {
-            {{modelName}}::destroy($id);
-            return response()->json(null, 204);
-        }
+        $cobas = Coba::latest()->get();
+        return response()->json($cobas);
     }
+    public function store(CobaRequest $request)
+    {
+        $coba = Coba::create($request->all());
+        return response()->json($coba, 201);
+    }
+    public function show($id)
+    {
+        $coba = Coba::findOrFail($id);
+        return response()->json($coba);
+    }
+    public function update(CobaRequest $request, $id)
+    {
+        $coba = Coba::findOrFail($id);
+        $coba->update($request->all());
+        return response()->json($coba, 200);
+    }
+    public function destroy($id)
+    {
+        Coba::destroy($id);
+        return response()->json(null, 204);
+    }
+}
