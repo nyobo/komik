@@ -22,10 +22,9 @@ Route::get('checkusers', 'TesterController@checkusers');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('bukus', 'buku\bukuapps');
 });
-Route::resource('testers ', 'testerController');
-Route::resource('cobas', 'CobaController');
-
 Route::post('register', 'API\RegisterController@register');
 Route::middleware('auth:api')->group(function () {
     Route::resource('products', 'API\ProductController');
+    Route::resource('komiks','API\KomikController');
 });
+

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class KomikDetail extends Migration
+class CreateKomikSTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,15 @@ class KomikDetail extends Migration
      */
     public function up()
     {
-        Schema::create('komik_detail', function (Blueprint $table) {
+        Schema::create('komiks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('judul');
+            $table->string('discription');
+            $table->string('rating');
+            $table->string('image_profile');
+            $table->integer('status');
+            $table->integer('id_autor');
+            $table->integer('id_kategori');
             $table->timestamps();
         });
     }
@@ -26,6 +33,6 @@ class KomikDetail extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('komik_detail');
+        Schema::dropIfExists('komiks');
     }
 }

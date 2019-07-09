@@ -1,18 +1,18 @@
 <?php
     namespace App\Http\Controllers\API;
 
-    use App\Http\Requests\{{modelName}}Request;
+    use App\Http\Requests\KomikRequest;
     use App\Http\Controllers\API\BaseController as BaseController;
-    use App\{{modelName}};
+    use App\Komik;
     use Validator;
-    class {{modelName}}Controller extends BaseController
+    class KomikController extends BaseController
     {
         public function index()
         {
-            ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
-            return response()->json(${{modelNamePluralLowerCase}});
+            $komiks = Komik::latest()->get();
+            return response()->json($komiks);
         }
-        public function store({{modelName}}Request $request)
+        public function store(KomikRequest $request)
         {
         //Jika menggukana validation
         // $input = $request->all();
@@ -25,18 +25,18 @@
         // if ($validator->fails()) {
         //     return $this->sendError('Validation Error.', $validator->errors());
         // }
-            ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 201);
+            $komik = Komik::create($request->all());
+            return response()->json($komik, 201);
         }
         public function show($id)
         {
-            // if (is_null(${{modelNameSingularLowerCase}})) {
+            // if (is_null($komik)) {
             //     return $this->sendError('Product not found.');
             // }            
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-            return response()->json(${{modelNameSingularLowerCase}});
+            $komik = Komik::findOrFail($id);
+            return response()->json($komik);
         }
-        public function update({{modelName}}Request $request, $id)
+        public function update(KomikRequest $request, $id)
         {
             // $input = $request->all();
             // $validator = Validator::make($input, [
@@ -50,18 +50,18 @@
             // }
 
 
-            // ${{modelNameSingularLowerCase}}->name = $input['name'];
-            // ${{modelNameSingularLowerCase}}->detail = $input['detail'];
-            // ${{modelNameSingularLowerCase}}->save();
+            // $komik->name = $input['name'];
+            // $komik->detail = $input['detail'];
+            // $komik->save();
 
-            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+            $komik = Komik::findOrFail($id);
             //kalau mengunakan yang atas bawah ini di hapus
-            ${{modelNameSingularLowerCase}}->update($request->all());
-            return response()->json(${{modelNameSingularLowerCase}}, 200);
+            $komik->update($request->all());
+            return response()->json($komik, 200);
         }
         public function destroy($id)
         {
-            {{modelName}}::destroy($id);
+            Komik::destroy($id);
             return response()->json(null, 204);
         }
     }

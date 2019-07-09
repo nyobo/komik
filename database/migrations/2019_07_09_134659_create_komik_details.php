@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColomnMasukTable extends Migration
+class CreateKomikDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddColomnMasukTable extends Migration
      */
     public function up()
     {
-        Schema::table('cobas', function (Blueprint $table) {
-            $table->string('masuk')->after('coba_description');
+        Schema::create('komik_details', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('judul');
+            $table->string('image');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddColomnMasukTable extends Migration
      */
     public function down()
     {
-        Schema::table('cobas', function (Blueprint $table) {
-            $table->dropColumn('masuk');
-        });
+        Schema::dropIfExists('komik_details');
     }
 }

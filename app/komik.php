@@ -3,7 +3,7 @@
 
     use Illuminate\Database\Eloquent\Model;
 
-    class komik extends Model
+    class Komik extends Model
     {
         protected $guarded = ['id'];
     }

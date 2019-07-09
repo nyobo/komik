@@ -34,13 +34,11 @@ class CrudGenerator extends Command
 
         // if(file model ada  File append gak di eksekusi){}
         File::append(
-            base_path('routes/api.php'),
-            'Route::resource(
-                \'' . Str::plural(strtolower($name)) . "','" . $name . 'Controller\');'
+            base_path('routes/api.php'),'Route::resource(\'' . Str::plural(strtolower($name)) . "','API/" . $name . 'Controller\');'
         );
-        Artisan::call(
-            'make:migration create_' . strtolower(Str::plural($name)) . '_table --create=' . strtolower(Str::plural($name))
-        );
+        // Artisan::call(
+        //     'make:migration create_' . strtolower(Str::plural($name)) . '_table --create=' . strtolower(Str::plural($name))
+        // );
     }
 
     protected function getStub($type)
@@ -97,7 +95,7 @@ class CrudGenerator extends Command
         );
 
         file_put_contents(
-            app_path("/Http/Controllers/{$name}Controller.php"),
+            app_path("/Http/Controllers/API/{$name}Controller.php"),
             $modelTemplate
         );
     }

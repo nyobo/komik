@@ -3,7 +3,7 @@
 
     use Illuminate\Foundation\Http\FormRequest;
 
-    class komikRequest extends FormRequest
+    class KomikRequest extends FormRequest
     {
         public function authorize()
         {
