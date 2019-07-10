@@ -15,16 +15,26 @@ use Illuminate\Http\Request;
 
 // Auth::routes(['verify' => true]);
 Route::post('login', 'API\UserController@login');
-Route::group(['middleware' => 'auth:api'], function () {
+// Route::group(['middleware' => 'auth:api'], function () {
+//     Route::post('details', 'API\UserController@details');
+// });
+// Route::get('checkusers', 'TesterController@checkusers');
+// Route::group(['middleware' => 'auth:api'], function () {
+//     Route::apiResource('bukus', 'buku\bukuapps');
+// });
+
+// Route::post('register', 'API\RegisterController@register');
+
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
+
+Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'API\UserController@details');
 });
-Route::get('checkusers', 'TesterController@checkusers');
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::apiResource('bukus', 'buku\bukuapps');
-});
-Route::post('register', 'API\RegisterController@register');
+
 Route::middleware('auth:api')->group(function () {
     Route::resource('products', 'API\ProductController');
     Route::resource('komiks','API\KomikController');
+	Route::resource('kategoris','API\KategoriController');
+	Route::resource('komik-details','API\KomikDetailController');
 });
-
