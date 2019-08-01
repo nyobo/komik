@@ -14,8 +14,11 @@ class CobaTableSeeder extends Seeder
         // factory(App\Coba::class, 500)->create()->each(function ($post) {
         //     $post->save();
         // });
-        factory(App\Kategori::class, 500)->create()->each(function ($post) {
-            $post->save();
-        });
+        // factory(App\Kategori::class, 500)->create()->each(function ($post) {
+        //    $post->save();
+        // });
+        // factory(App\Product::class, 500)->create()->each(function ($post) {
+        //     $post->save();
+        // });
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Komik;
+use App\KomikDetail;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,20 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // echo "tester";
+        // $komiks = Komik::latest()->get()->toArray();
+        // foreach ($komiks as $komik) {
+        //     // print_r();
+        //     $id = $komik['id'];
+
+        //     $komikdetails = KomikDetail::latest()->where('id_komik', '=', $id)->get()->toArray();
+        //     if ($komikdetails != null) {
+
+        //         print("<pre>" . print_r($komikdetails, true) . "</pre>");
+        //     }
+        // }
+
+        // var_dump($komiks);
         return view('home');
     }
 }

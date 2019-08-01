@@ -3,28 +3,43 @@
 
     use App\Http\Requests\KomikDetailRequest;
     use App\Http\Controllers\API\BaseController as BaseController;
+    use Illuminate\Support\Facades\Input;
     use App\KomikDetail;
     use App\Komik;
     use App\ImageKomikDetails;
     use Validator;
+    use DB;
     class KomikDetailController extends BaseController
     {
         public function index()
         {
-            $komikdetails = KomikDetail::latest()->get();
-            // return response()->json($komikdetails);
-             return $this->sendResponse($komikdetails->toArray(), 'Komik Details retrieved successfully.');
+            $komikdetail ;
+            $id_komik = Input::get('id_komik')!= null ? Input::get('id_komik') : '';
+            if ($id_komik!=null) {
+                $komikdetail = KomikDetail::where('id_komik','=',$id_komik)->orderBy('created_at','desc')->get();
+                $komikdetails = $komikdetail;
+            }else{
+                $komikdetails = KomikDetail::all();
+            }
+            // $tester= [];
+            // foreach ($komikdetails as $komikdetail) {
+            //     $ImagesKomikDetails = ImageKomikDetails::where('id_komik_details', '=', $komikdetail->id)->get();
+            //     if ($ImagesKomikDetails->toArray() != null) {;
+            //         $tester[]= array_merge($komikdetail->toArray(),['images'=>$ImagesKomikDetails->toArray()]);
+            //     }
+            // }
+            // return response()->json($tester);
+            return $this->sendResponse($komikdetails, 'Komiks retrieved successfully.');
         }
         public function store(KomikDetailRequest $request)
         {
-            // Jika menggukana validation
             $input = $request->all();
 
             $validator = Validator::make($input, [
                 'judul' => 'required',
                 'image' => 'required |mimes:jpeg,png,bmp,tiff |max:4096',
-                'id_komik' => 'required'
-                'images' =>'required |mimes:jpeg,png,bmp,tiff |max:4096',
+                'id_komik' => 'required',
+                'images.*' =>'image',
             ]);
 
             if ($validator->fails()) {
@@ -41,37 +56,73 @@
             } else {
                 $image = NULL;
             }
-            // if ($request->file('images')) {
-            //     $images =$request->file('images');
-            //     foreach ($images as $image) {
-            //         $filename =$file->getClientOriginalExtension();
-            //     }
-            //     // $acak =$file->getClientOriginalExtension();
-            //     // $fileName =rand(11111,9999).'.'.$acak;
-            //     // $request->file('images')->move()
-            // }else{
-
-            // }
+            
             $cekKomik = Komik::where('id', '=', $request->get('id_komik'))->exists();
             if (!$cekKomik) {
                 return $this->sendError('Komik not Found');
             }
-             $komikdetail = KomikDetail::create([
+            $noUrut = 0;
+            $KomikDetail = KomikDetail::where('id_komik','=',$request->get('id_komik'));
+            if ($KomikDetail->exists()) {
+                $noUrut = $KomikDetail->get()->count() + 1;
+            }
+
+            $komikdetail = KomikDetail::create([
                 'judul' => $request->get('judul'),
                 'image' => $image,
-                'id_komik' => $request->get('id_komik')
+                'id_komik' => $request->get('id_komik'),
+                'no_urut'=> $noUrut,
             ]);
+             if ($request->hasfile('images')) {
+                $images =$request->file('images');
+                // print_r($request->file('images'));
+                foreach($images as $image)
+                {
+                    $fileExtension =$image->getClientOriginalExtension();
+                    $file = rand(1111,9999).'.'.$fileExtension;
+                    $image->move("images/image_komik_details",$file);
+                    // $request->file($image)->move("images/image_komik_details",$file);
+
+                    $imageKomikDetail = new ImageKomikDetails();
+                    // ImageKomikDetails::create([
+                    //     'image'=>$file,
+                    //     'id_komik_details'=>$komikdetail->id,
+                    // ]);
+                    $imageKomikDetail->image = $file;
+                    $imageKomikDetail->id_komik_details = $komikdetail->id;
+                    $imageKomikDetail->save();
+                }
+            }
+            // print_r($komikdetail->id);
+            // die();
+            $ImagesKomikDetails = ImageKomikDetails::where('id_komik_details', '=', $komikdetail->id)->get();
+            $response = array_merge($komikdetail->toArray(),['images'=>$ImagesKomikDetails->toArray()]);
             // $komikdetail = KomikDetail::create($request->all());
             // return response()->json($komikdetail, 201);
-              return $this->sendResponse($komikdetail->toArray(), 'Komiks retrieved successfully.');
+            // $komikAndImage = [
+            //     $komikdetail->toArray(),
+            //     'data' => $ImagesKomikDetails
+            // ];
+
+              return $this->sendResponse($response, 'Komiks retrieved successfully.');
         }
         public function show($id)
         {
+
+            $ids = explode('-',$id);
+            $idKomikDetial = $ids[0];
+            $noUrut = $ids[1];
             // if (is_null($komikdetail)) {
             //     return $this->sendError('Product not found.');
-            // }            
-            $komikdetail = KomikDetail::findOrFail($id);
-            return response()->json($komikdetail);
+            // }
+            $count = KomikDetail::where('id_komik','=',$idKomikDetial)->get()->count();
+            $komikdetail = KomikDetail::where('id_komik','=',$idKomikDetial)->where('no_urut','=',$noUrut)->first();
+            $ImagesKomikDetails = ImageKomikDetails::where('id_komik_details', '=', $komikdetail->id)->get();
+            $response = array_merge($komikdetail->toArray(),['images'=>$ImagesKomikDetails->toArray()]);
+            $response = array_merge($response,['jumlah'=>$count]);
+
+
+            return response()->json($response);
         }
         public function update(KomikDetailRequest $request, $id)
         {
