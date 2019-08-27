@@ -15,13 +15,19 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message,$showcount = false)
     {
+        $jumlah = 0 ;
+        if (!is_array($result)) {
+            $jumlah = $result->count();
+        }else{
+            $jumlah = count($result);
+        }
         $response = [
             'success' => true,
             'data'    => $result,
             'message' => $message,
-            'jumlah'  => $result->count()
+            'jumlah'  => $jumlah
         ];
 
 

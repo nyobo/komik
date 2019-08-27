@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 // Auth::routes(['verify' => true]);
-Route::post('login', 'API\UserController@login');
+// Route::post('login', 'API\UserController@login');
 // Route::group(['middleware' => 'auth:api'], function () {
 //     Route::post('details', 'API\UserController@details');
 // });
@@ -28,13 +28,19 @@ Route::post('login', 'API\UserController@login');
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 
-Route::group(['middleware' => 'auth:api'], function(){
-    Route::post('details', 'API\UserController@details');
-});
+// Route::group(['middleware' => 'auth:api'], function(){
+//     Route::post('details', 'API\UserController@details');
+// });
 
 Route::middleware('auth:api')->group(function () {
     Route::resource('products', 'API\ProductController');
     Route::resource('komiks','API\KomikController');
 	Route::resource('kategoris','API\KategoriController');
-	Route::resource('komik-details','API\KomikDetailController');
+    Route::resource('komik-details','API\KomikDetailController');
+    Route::resource('banners','API\BannerController');
+    Route::resource('jadwals','API\JadwalController');
 });
+// Route::fallback(function(){
+//     return response()->json([
+//         'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
+// });

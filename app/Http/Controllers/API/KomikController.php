@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\KomikRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use App\Komik;
+use App\KomikDetail;
 use App\Kategori;
 use Validator;
 
@@ -13,7 +15,15 @@ class KomikController extends BaseController
 {
     public function index()
     {
-        $komiks = Komik::latest()->get();
+        $id_jadwal = Input::get('id_jadwal')!= null ? Input::get('id_jadwal') : '';
+        $id_kategori = Input::get('id_kategori')!= null ? Input::get('id_kategori') : '';
+        if ($id_jadwal != null) {
+            $komiks = Komik::where('id_jadwal','=',$id_jadwal)->get();
+        }elseif($id_kategori !=null){
+            $komiks = Komik::where('id_kategori','=',$id_kategori)->get();
+        }else{
+            $komiks = Komik::latest()->get();
+        }
         return $this->sendResponse($komiks->toArray(), 'Komiks retrieved successfully.');
         // return response()->json($komiks);
     }
@@ -28,6 +38,7 @@ class KomikController extends BaseController
                 'judul' => 'required',
                 'discription' => 'required',
                 'id_autor' => 'required',
+                'id_jadwal' => 'required',
                 'id_kategori' => 'required',
                 'image_profile' => 'mimes:jpeg,png,bmp,tiff |max:4096 |required',
             ],
@@ -65,6 +76,7 @@ class KomikController extends BaseController
             'status' => $request->get('status'),
             'id_autor' => $user->id,
             'id_kategori' => $request->get('id_kategori'),
+            'id_jadwal' => $request->get('id_jadwal'),
         ]);
         // $komik = Komik::create($request->all());
         return response()->json($komik, 201);
@@ -75,8 +87,22 @@ class KomikController extends BaseController
         // if (is_null($komik)) {
         //     return $this->sendError('Product not found.');
         // }
-        $komik = Komik::findOrFail($id);
-        return response()->json($komik);
+        $komik = Komik::findOrFail($id)->toArray();
+        $dbKomikDetail = KomikDetail::where('id_komik','=',$id);
+        $jmlKomikDetail = $dbKomikDetail->count();
+        $komikDetail = $dbKomikDetail->limit(1)->orderBy('no_urut','asc')->get()->toArray();
+        // array_push($komik,$komikDetail->)
+        $kategoriName  = Kategori::where('id', '=' ,$komik['id_kategori'])->limit(1)->get()->toArray()[0]['judul'];
+        $fristIdKomikDetail = $komikDetail != null ? $komikDetail[0]['id'] : 0 ;
+        $tester =array_merge(
+            $komik,
+            [
+                'frist_id_komik_detail'=>$fristIdKomikDetail,
+                'jumlah_komik_detail'=>$jmlKomikDetail,
+                'kategori' => $kategoriName
+            ]
+        );
+        return response()->json($tester);
     }
     public function update(KomikRequest $request, $id)
     {

@@ -20,6 +20,7 @@ class CreateKomikSTable extends Migration
             $table->string('rating');
             $table->string('image_profile');
             $table->integer('status');
+            $table->integer('id_jadwal');
             $table->integer('id_autor');
             $table->integer('id_kategori');
             $table->timestamps();

@@ -17,6 +17,8 @@ class CreateKomikDetails extends Migration
             $table->bigIncrements('id');
             $table->string('judul');
             $table->string('image');
+            $table->integer('id_komik');
+            $table->integer('no_urut');
             $table->timestamps();
         });
     }

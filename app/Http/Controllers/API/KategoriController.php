@@ -4,27 +4,37 @@
     use App\Http\Requests\KategoriRequest;
     use App\Http\Controllers\API\BaseController as BaseController;
     use App\Kategori;
+    use Illuminate\Support\Facades\DB;
     use Validator;
     class KategoriController extends BaseController
     {
         public function index()
         {
-            $kategoris = Kategori::latest()->get();
-            return response()->json($kategoris);
+
+     
+            $kategoris = Kategori::
+            select('kategoris.*',DB::raw('count(komiks.id) as jumlah'))
+            ->leftJoin('komiks','kategoris.id','=','komiks.id_kategori')
+            ->groupBy('kategoris.id')
+            ->get();
+            // ->groupBy('kategoris.id')
+            // ->select()->get();
+            // $kategoris = Kategori::latest()->get();
+            return $this->sendResponse($kategoris->toArray(), 'Komiks retrieved successfully.');
         }
         public function store(KategoriRequest $request)
         {
         //Jika menggukana validation
-        // $input = $request->all();
+        $input = $request->all();
 
-        // $validator = Validator::make($input, [
-        //     'name' => 'required',
-        //     'detail' => 'required'
-        // ]);
+        $validator = Validator::make($input, [
+            'judul' => 'required',
+            'color' => 'required'
+        ]);
 
-        // if ($validator->fails()) {
-        //     return $this->sendError('Validation Error.', $validator->errors());
-        // }
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
             $kategori = Kategori::create($request->all());
             return response()->json($kategori, 201);
         }
