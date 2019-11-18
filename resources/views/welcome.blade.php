@@ -27,7 +27,10 @@
     @endif
 	@include('landing-page.partials.masthead')
 
-	@include('landing-page.partials.icons-grid')
+    @include('landing-page.partials.tab-jadwal')
+    @include('landing-page.partials.tab-baru')
+	
+    @include('landing-page.partials.icons-grid')
 
 	@include('landing-page.partials.image-showcases')
 

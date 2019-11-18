@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\Komik;
 use App\KomikDetail;
 use App\Kategori;
+use App\ViewKomik;
 use Validator;
 
 class KomikController extends BaseController
@@ -94,12 +95,14 @@ class KomikController extends BaseController
         // array_push($komik,$komikDetail->)
         $kategoriName  = Kategori::where('id', '=' ,$komik['id_kategori'])->limit(1)->get()->toArray()[0]['judul'];
         $fristIdKomikDetail = $komikDetail != null ? $komikDetail[0]['id'] : 0 ;
+        $jmlViewKomik = ViewKomik::getViewKomikByIdKomik($id);
         $tester =array_merge(
             $komik,
             [
                 'frist_id_komik_detail'=>$fristIdKomikDetail,
                 'jumlah_komik_detail'=>$jmlKomikDetail,
-                'kategori' => $kategoriName
+                'kategori' => $kategoriName,
+                'jml_view_komik'=>$jmlViewKomik
             ]
         );
         return response()->json($tester);

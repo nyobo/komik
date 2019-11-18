@@ -37,7 +37,6 @@ class HomeController extends Controller
         //         print("<pre>" . print_r($komikdetails, true) . "</pre>");
         //     }
         // }
-
         // var_dump($komiks);
         return view('home');
     }

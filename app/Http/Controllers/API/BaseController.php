@@ -33,7 +33,24 @@ class BaseController extends Controller
 
         return response()->json($response, 200);
     }
+    
+    public function sendResponseCreate($result,$message,$showcount =false){
+        $response = [
+            'success' => true,
+            'data' =>$result,
+            'message' => $message
+        ];
+        return response()->json($response,201);
+    }
 
+    public function sendResponseDelete($result,$message,$showcount =false){
+        $response = [
+            'success' => true,
+            'data' =>$result,
+            'message' => $message
+        ];
+        return response()->json($response,204);
+    }
 
     /**
      * return error response.

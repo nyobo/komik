@@ -6,14 +6,15 @@
     use Illuminate\Support\Facades\Input;
     use App\KomikDetail;
     use App\Komik;
+    use App\Komentar;
     use App\ImageKomikDetails;
+    use App\ViewKomik;
     use Validator;
     use DB;
     class KomikDetailController extends BaseController
     {
         public function index()
         {
-
             // $tester= [];
             // foreach ($komikdetails as $komikdetail) {
             //     $ImagesKomikDetails = ImageKomikDetails::where('id_komik_details', '=', $komikdetail->id)->get();
@@ -22,7 +23,6 @@
             //     }
             // }
             // return response()->json($tester);
-            $komikdetail ;
             $id_komik = Input::get('id_komik')!= null ? Input::get('id_komik') : '';
             if ($id_komik!=null) {
                 $komikdetail = KomikDetail::where('id_komik','=',$id_komik)->orderBy('created_at','desc')->get();
@@ -36,7 +36,6 @@
         public function store(KomikDetailRequest $request)
         {
             $input = $request->all();
-
             // die();
             $validator = Validator::make($input, [
                 'judul' => 'required',
@@ -44,7 +43,6 @@
                 'id_komik' => 'required',
                 'images.*' =>'image',
             ]);
-
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
@@ -77,7 +75,7 @@
                 'id_komik' => $request->get('id_komik'),
                 'no_urut'=> $noUrut,
             ]);
-             if ($request->hasfile('images')) {
+            if ($request->hasfile('images')) {
                 $images =$request->file('images');
                 // print_r($request->file('images'));
                 foreach($images as $image)
@@ -108,7 +106,7 @@
             //     'data' => $ImagesKomikDetails
             // ];
 
-              return $this->sendResponse($response, 'Komiks retrieved successfully.');
+            return $this->sendResponse($response, 'Komiks retrieved successfully.');
         }
         public function show($id)
         {
@@ -121,10 +119,15 @@
             // }
             $count = KomikDetail::where('id_komik','=',$idKomikDetial)->get()->count();
             $komikdetail = KomikDetail::where('id_komik','=',$idKomikDetial)->where('no_urut','=',$noUrut)->first();
+            if ($komikdetail == null) {
+                return $this->sendError('komik not Found');
+            }
             $ImagesKomikDetails = ImageKomikDetails::where('id_komik_details', '=', $komikdetail->id)->get();
+            $countKoment = Komentar::countKomentarByIdKomikDetail($komikdetail->id);
+            $baseKomentar = Komentar::getKomentarPopulareByIdKomikDetail($komikdetail->id);
+            $jmlViewKomik = ViewKomik::getViewKomikByIdKomik($komikdetail->id_komik);
             $response = array_merge($komikdetail->toArray(),['images'=>$ImagesKomikDetails->toArray()]);
-            $response = array_merge($response,['jumlah'=>$count]);
-            
+            $response = array_merge($response,['jumlah'=>$count,'jml_komentar'=>$countKoment,'jml_view_komik'=> $jmlViewKomik,'base_komentar'=>$baseKomentar]);
 
             return response()->json($response);
         }

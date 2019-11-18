@@ -10,7 +10,7 @@
         public function index()
         {
             $jadwals = Jadwal::latest()->get();
-            return $this->sendResponse($jadwals->toArray(), '$jadwals retrieved successfully.');
+            return $this->sendResponse($jadwals->toArray(), 'jadwals retrieved successfully.');
             // return response()->json($jadwals);
         }
         public function store(JadwalRequest $request)

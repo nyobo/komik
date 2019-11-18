@@ -1,0 +1,2 @@
+$('.carousel').carousel()
+$('.carauselTabBaru').carousel()

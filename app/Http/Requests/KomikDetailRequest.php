@@ -11,6 +11,11 @@
         }
         public function rules()
         {
-            return [];
+            return [
+                // 'judul' => 'required',
+                // 'image' => 'required |mimes:jpeg,png,bmp,tiff',
+                // 'id_komik' => 'required',
+                // 'images.*' =>'image',
+            ];
         }
     }

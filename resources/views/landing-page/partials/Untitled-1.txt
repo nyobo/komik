@@ -1,0 +1,136 @@
+<?php use App\Jadwal; 
+$jadwals = Jadwal::getDataHari();
+?>
+<style>
+    .card-judul{
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .card-text-judul{
+        margin-bottom:0;
+        padding-left:5px;
+    }
+</style>
+<div class="container">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <?php $noJadwal1 = 0; ?>
+        <?php foreach ($jadwals as $jadwal) {?>
+            <?php $active = $noJadwal1==0 ? 'active' : ''; ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo($active);?>" id="pills-<?php echo($jadwal['name'])?>-tab" data-toggle="pill" href="#pills-<?php echo($jadwal['name'])?>" role="tab" aria-controls="pills-<?php echo($jadwal['name'])?>" aria-selected="true">
+                <?php echo($jadwal['name'])?>
+                </a>
+            </li>
+        <?php $noJadwal1 = $noJadwal1+1; } ?>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+    <?php $noJadwal2 = 0 ;?>
+    <?php foreach ($jadwals as $jadwal) {?>
+        <?php $active = $noJadwal2==0 ? 'show active' : ''; ?>
+        <div class="tab-pan fade <?php echo($active);?>" id="pills-<?php echo($jadwal['name'])?>" role="tabpanel" aria-labelledby="pills-<?php echo($jadwal['name'])?>-tab">
+            <a><?php echo($jadwal['name'])?></a>
+        </div>
+    <?php $noJadwal2= $noJadwal2+1;} ?>
+    </div>
+<!-- <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pan fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="row">
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col col-2">
+                <div class="card bg-drak text-white">
+                    <img class="card-img" src="http://127.0.0.1:8000/vendor/landing-page/img/bg-showcase-1.jpg"></img>
+                    <div class="card-judul">
+                        <p class="card-text-judul">Card Title</p>
+                        <p class="card-text-judul"><a class="fa fa-heart"></a></p>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div> 
+    <div class="tab-pan fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+    
+    </div>  -->
+</div>

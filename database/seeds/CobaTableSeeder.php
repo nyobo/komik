@@ -11,6 +11,9 @@ class CobaTableSeeder extends Seeder
      */
     public function run()
     {
+            factory(App\Komentar::class, 3000)->create()->each(function ($post) {
+                $post->save();
+            });
         // factory(App\Coba::class, 500)->create()->each(function ($post) {
         //     $post->save();
         // });
